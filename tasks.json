@@ -1,0 +1,452 @@
+[
+    {
+        "id": 1,
+        "title": "Set up project structure",
+        "description": "Create the initial directory structure for the Todo application.",
+        "completed": true,
+        "priority": "high",
+        "category": "Development",
+        "due_date": "2026-08-01"
+    },
+    {
+        "id": 2,
+        "title": "Initialize Git repository",
+        "description": "Initialize Git and create the first commit.",
+        "completed": true,
+        "priority": "high",
+        "category": "Development",
+        "due_date": "2026-08-02"
+    },
+    {
+        "id": 3,
+        "title": "Create virtual environment",
+        "description": "Set up a Python virtual environment.",
+        "completed": true,
+        "priority": "high",
+        "category": "Development",
+        "due_date": "2026-08-03"
+    },
+    {
+        "id": 4,
+        "title": "Install dependencies",
+        "description": "Install required packages using pip.",
+        "completed": false,
+        "priority": "high",
+        "category": "Development",
+        "due_date": "2026-08-04"
+    },
+    {
+        "id": 5,
+        "title": "Configure environment variables",
+        "description": "Create .env file and configure application settings.",
+        "completed": false,
+        "priority": "high",
+        "category": "Configuration",
+        "due_date": "2026-08-05"
+    },
+    {
+        "id": 6,
+        "title": "Design database schema",
+        "description": "Plan tables and relationships.",
+        "completed": false,
+        "priority": "high",
+        "category": "Database",
+        "due_date": "2026-08-06"
+    },
+    {
+        "id": 7,
+        "title": "Create User model",
+        "description": "Implement user model.",
+        "completed": false,
+        "priority": "high",
+        "category": "Backend",
+        "due_date": "2026-08-07"
+    },
+    {
+        "id": 8,
+        "title": "Create Todo model",
+        "description": "Implement todo item model.",
+        "completed": false,
+        "priority": "high",
+        "category": "Backend",
+        "due_date": "2026-08-08"
+    },
+    {
+        "id": 9,
+        "title": "Add database migrations",
+        "description": "Create and apply migrations.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Database",
+        "due_date": "2026-08-09"
+    },
+    {
+        "id": 10,
+        "title": "Implement user registration",
+        "description": "Allow users to create accounts.",
+        "completed": false,
+        "priority": "high",
+        "category": "Authentication",
+        "due_date": "2026-08-10"
+    },
+    {
+        "id": 11,
+        "title": "Implement login",
+        "description": "Authenticate existing users.",
+        "completed": false,
+        "priority": "high",
+        "category": "Authentication",
+        "due_date": "2026-08-11"
+    },
+    {
+        "id": 12,
+        "title": "Implement logout",
+        "description": "Allow users to securely logout.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Authentication",
+        "due_date": "2026-08-12"
+    },
+    {
+        "id": 13,
+        "title": "Create Todo API",
+        "description": "Implement CRUD endpoints.",
+        "completed": false,
+        "priority": "high",
+        "category": "API",
+        "due_date": "2026-08-13"
+    },
+    {
+        "id": 14,
+        "title": "List all todos",
+        "description": "Return user's todo list.",
+        "completed": false,
+        "priority": "high",
+        "category": "API",
+        "due_date": "2026-08-14"
+    },
+    {
+        "id": 15,
+        "title": "Get todo details",
+        "description": "Retrieve a single todo.",
+        "completed": false,
+        "priority": "medium",
+        "category": "API",
+        "due_date": "2026-08-15"
+    },
+    {
+        "id": 16,
+        "title": "Update todo",
+        "description": "Edit existing todo item.",
+        "completed": false,
+        "priority": "high",
+        "category": "API",
+        "due_date": "2026-08-16"
+    },
+    {
+        "id": 17,
+        "title": "Delete todo",
+        "description": "Remove todo item.",
+        "completed": false,
+        "priority": "medium",
+        "category": "API",
+        "due_date": "2026-08-17"
+    },
+    {
+        "id": 18,
+        "title": "Mark todo completed",
+        "description": "Toggle completion status.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Features",
+        "due_date": "2026-08-18"
+    },
+    {
+        "id": 19,
+        "title": "Add due dates",
+        "description": "Support due dates for tasks.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Features",
+        "due_date": "2026-08-19"
+    },
+    {
+        "id": 20,
+        "title": "Add priorities",
+        "description": "Support Low, Medium, High priority.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Features",
+        "due_date": "2026-08-20"
+    },
+    {
+        "id": 21,
+        "title": "Search todos",
+        "description": "Implement keyword search.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Features",
+        "due_date": "2026-08-21"
+    },
+    {
+        "id": 22,
+        "title": "Filter completed tasks",
+        "description": "Display completed tasks only.",
+        "completed": false,
+        "priority": "low",
+        "category": "Features",
+        "due_date": "2026-08-22"
+    },
+    {
+        "id": 23,
+        "title": "Filter pending tasks",
+        "description": "Display pending tasks.",
+        "completed": false,
+        "priority": "low",
+        "category": "Features",
+        "due_date": "2026-08-23"
+    },
+    {
+        "id": 24,
+        "title": "Sort by due date",
+        "description": "Sort tasks chronologically.",
+        "completed": false,
+        "priority": "low",
+        "category": "Features",
+        "due_date": "2026-08-24"
+    },
+    {
+        "id": 25,
+        "title": "Sort by priority",
+        "description": "Order tasks by priority.",
+        "completed": false,
+        "priority": "low",
+        "category": "Features",
+        "due_date": "2026-08-25"
+    },
+    {
+        "id": 26,
+        "title": "Add categories",
+        "description": "Group tasks into categories.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Features",
+        "due_date": "2026-08-26"
+    },
+    {
+        "id": 27,
+        "title": "Archive completed tasks",
+        "description": "Move completed tasks to archive.",
+        "completed": false,
+        "priority": "low",
+        "category": "Features",
+        "due_date": "2026-08-27"
+    },
+    {
+        "id": 28,
+        "title": "Restore archived task",
+        "description": "Recover archived todos.",
+        "completed": false,
+        "priority": "low",
+        "category": "Features",
+        "due_date": "2026-08-28"
+    },
+    {
+        "id": 29,
+        "title": "Implement pagination",
+        "description": "Paginate API responses.",
+        "completed": false,
+        "priority": "medium",
+        "category": "API",
+        "due_date": "2026-08-29"
+    },
+    {
+        "id": 30,
+        "title": "Add API validation",
+        "description": "Validate incoming request data.",
+        "completed": false,
+        "priority": "high",
+        "category": "API",
+        "due_date": "2026-08-30"
+    },
+    {
+        "id": 31,
+        "title": "Handle API errors",
+        "description": "Return meaningful error responses.",
+        "completed": false,
+        "priority": "high",
+        "category": "API",
+        "due_date": "2026-08-31"
+    },
+    {
+        "id": 32,
+        "title": "Write unit tests",
+        "description": "Test business logic.",
+        "completed": false,
+        "priority": "high",
+        "category": "Testing",
+        "due_date": "2026-09-01"
+    },
+    {
+        "id": 33,
+        "title": "Write API tests",
+        "description": "Test REST endpoints.",
+        "completed": false,
+        "priority": "high",
+        "category": "Testing",
+        "due_date": "2026-09-02"
+    },
+    {
+        "id": 34,
+        "title": "Configure logging",
+        "description": "Add structured logging.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Infrastructure",
+        "due_date": "2026-09-03"
+    },
+    {
+        "id": 35,
+        "title": "Configure CORS",
+        "description": "Allow frontend access.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Configuration",
+        "due_date": "2026-09-04"
+    },
+    {
+        "id": 36,
+        "title": "Implement JWT authentication",
+        "description": "Secure API using JWT.",
+        "completed": false,
+        "priority": "high",
+        "category": "Security",
+        "due_date": "2026-09-05"
+    },
+    {
+        "id": 37,
+        "title": "Rate limiting",
+        "description": "Protect API from abuse.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Security",
+        "due_date": "2026-09-06"
+    },
+    {
+        "id": 38,
+        "title": "Dockerize application",
+        "description": "Create Dockerfile.",
+        "completed": false,
+        "priority": "high",
+        "category": "Deployment",
+        "due_date": "2026-09-07"
+    },
+    {
+        "id": 39,
+        "title": "Create docker-compose",
+        "description": "Configure local containers.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Deployment",
+        "due_date": "2026-09-08"
+    },
+    {
+        "id": 40,
+        "title": "Configure CI/CD",
+        "description": "Automate testing and deployment.",
+        "completed": false,
+        "priority": "high",
+        "category": "DevOps",
+        "due_date": "2026-09-09"
+    },
+    {
+        "id": 41,
+        "title": "Write README",
+        "description": "Document project setup.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Documentation",
+        "due_date": "2026-09-10"
+    },
+    {
+        "id": 42,
+        "title": "Generate API documentation",
+        "description": "Publish OpenAPI documentation.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Documentation",
+        "due_date": "2026-09-11"
+    },
+    {
+        "id": 43,
+        "title": "Optimize database queries",
+        "description": "Improve query performance.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Performance",
+        "due_date": "2026-09-12"
+    },
+    {
+        "id": 44,
+        "title": "Add caching",
+        "description": "Cache frequently requested data.",
+        "completed": false,
+        "priority": "low",
+        "category": "Performance",
+        "due_date": "2026-09-13"
+    },
+    {
+        "id": 45,
+        "title": "Backup database",
+        "description": "Create automated backups.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Infrastructure",
+        "due_date": "2026-09-14"
+    },
+    {
+        "id": 46,
+        "title": "Deploy to staging",
+        "description": "Deploy application for testing.",
+        "completed": false,
+        "priority": "high",
+        "category": "Deployment",
+        "due_date": "2026-09-15"
+    },
+    {
+        "id": 47,
+        "title": "Run integration tests",
+        "description": "Verify end-to-end functionality.",
+        "completed": false,
+        "priority": "high",
+        "category": "Testing",
+        "due_date": "2026-09-16"
+    },
+    {
+        "id": 48,
+        "title": "Deploy to production",
+        "description": "Release stable version.",
+        "completed": false,
+        "priority": "high",
+        "category": "Deployment",
+        "due_date": "2026-09-17"
+    },
+    {
+        "id": 49,
+        "title": "Monitor application",
+        "description": "Track logs and metrics.",
+        "completed": false,
+        "priority": "medium",
+        "category": "Monitoring",
+        "due_date": "2026-09-18"
+    },
+    {
+        "id": 50,
+        "title": "Plan next release",
+        "description": "Define roadmap for version 2.0.",
+        "completed": false,
+        "priority": "low",
+        "category": "Planning",
+        "due_date": "2026-09-19"
+    }
+]

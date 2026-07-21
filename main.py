@@ -1,6 +1,11 @@
+import json
+
 import uvicorn
 from fastapi import FastAPI, Query, Body, Path
+from fastapi.responses import Response
+from fastapi import status
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 
 from models import engine, Tasks, Base
 
@@ -15,68 +20,182 @@ def health_view() -> dict:
 
 
 @app.get("/api/tasks")
-def get_tasks_view(
-    limit: int = Query(10),
-    title: str = Query(''),
-) -> list[dict]:
+def get_tasks_view(page: int = Query(1, ge=1), n: int = Query(4, ge=1)) -> list[dict]:
+    offset = (page - 1) * n
+    limit = n
     with Session(engine) as session:
-        tasks: list[Tasks] = session.query(Tasks).all()
+        tasks: list[Tasks] = (
+            session.query(Tasks)
+            .order_by(desc(Tasks.id))
+            .offset(offset)
+            .limit(limit)
+            .all()
+        )
 
     result = []
     for task in tasks:
-        result.append({
-            "id": task.id,
-            "title": task.title,
-            "description": task.description,
-            "status": task.status,
-        })
+        result.append(
+            {
+                "id": task.id,
+                "title": task.title,
+                "description": task.description,
+                "status": task.status,
+            }
+        )
 
-    if title:
-        return [task for task in result if title.lower() in task["title"].lower()][:limit]
-    return result[:limit]
+    return result
 
 
-# GET     /api/tasks/id - task detail
 @app.get("/api/tasks/{task_id}")
-def get_task_detail_view(task_id: int) -> dict:
+def get_task_detail_view(task_id: int = Path(ge=1)) -> Response:
     with Session(engine) as session:
         task: Tasks | None = session.query(Tasks).get(task_id)
 
     if task:
-        return {
-            "id": task.id,
-            "title": task.title,
-            "description": task.description,
-            "status": task.status,
-        }
-    return {'message': 'not found'}
+        return Response(
+            content=json.dumps(
+                {
+                    "id": task.id,
+                    "title": task.title,
+                    "description": task.description,
+                    "status": task.status,
+                }
+            ),
+            headers={"Content-Type": "application/json"},
+        )
+    return Response(
+        content=json.dumps({"message": "task not found"}),
+        status_code=status.HTTP_404_NOT_FOUND,
+        headers={"Content-Type": "application/json"},
+    )
 
 
-# POST    /api/tasks    - create task
 @app.post("/api/tasks")
-def create_task_view(
-    data: dict = Body()
-) -> dict:
-    task = Tasks(**data) # id=1, title="fsda"
+def create_task_view(data: dict = Body()) -> Response:
     with Session(engine) as session:
+        task = Tasks(**data)
         session.add(task)
         session.commit()
+        session.refresh(task)
 
-    return {'message': 'ok'}
+    return Response(
+        content=json.dumps(
+            {
+                "id": task.id,
+                "title": task.title,
+                "description": task.description,
+                "status": task.status,
+            }
+        ),
+        status_code=status.HTTP_201_CREATED,
+        headers={"Content-Type": "application/json"},
+    )
 
 
-# PUT     /api/tasks/id - create task
 @app.put("/api/tasks/{task_id}")
-def update_task_view(
-    task_id: int = Path(),
-    data: dict = Body()
-) -> dict:
-    pass
+def update_task_view(task_id: int = Path(ge=1), data: dict = Body()) -> Response:
+    with Session(engine) as session:
+        task: Tasks | None = session.query(Tasks).get(task_id)
+        if task:
+            task.title = data["title"] if data.get("title") else task.title
+            task.description = (
+                data["description"] if data.get("description") else task.description
+            )
+            task.status = data["status"] if data.get("status") else task.status
 
-# PATCH   /api/tasks/id - mark as completed
-# PATCH   /api/tasks/id - mark as incompleted
-# DELETE  /api/tasks/id - delete task
+            session.add(task)
+            session.commit()
+
+            return Response(
+                content=json.dumps(
+                    {
+                        "id": task.id,
+                        "title": task.title,
+                        "description": task.description,
+                        "status": task.status,
+                    }
+                ),
+                headers={"Content-Type": "application/json"},
+            )
+
+        return Response(
+            content=json.dumps({"message": "task not found"}),
+            status_code=status.HTTP_404_NOT_FOUND,
+            headers={"Content-Type": "application/json"},
+        )
+
+
+@app.delete("/api/tasks/{task_id}")
+def delete_task_view(task_id: int = Path(ge=1)) -> Response:
+    with Session(engine) as session:
+        task: Tasks | None = session.query(Tasks).get(task_id)
+        session.delete(task)
+        session.commit()
+
+        return Response(
+            content=json.dumps({"message": "task has been deleted"}),
+            status_code=status.HTTP_204_NO_CONTENT,
+            headers={"Content-Type": "application/json"},
+        )
+
+
+@app.patch("/api/tasks/{task_id}/completed")
+def mark_as_comleted_view(task_id: int = Path(ge=1)) -> Response:
+    with Session(engine) as session:
+        task: Tasks | None = session.query(Tasks).get(task_id)
+        if task:
+            task.status = True
+
+            session.add(task)
+            session.commit()
+
+            return Response(
+                content=json.dumps(
+                    {
+                        "id": task.id,
+                        "title": task.title,
+                        "description": task.description,
+                        "status": task.status,
+                    }
+                ),
+                headers={"Content-Type": "application/json"},
+            )
+
+        return Response(
+            content=json.dumps({"message": "task not found"}),
+            status_code=status.HTTP_404_NOT_FOUND,
+            headers={"Content-Type": "application/json"},
+        )
+
+
+@app.patch("/api/tasks/{task_id}/incompleted")
+def mark_as_incomleted_view(task_id: int = Path(ge=1)) -> Response:
+    with Session(engine) as session:
+        task: Tasks | None = session.query(Tasks).get(task_id)
+        if task:
+            task.status = False
+
+            session.add(task)
+            session.commit()
+
+            return Response(
+                content=json.dumps(
+                    {
+                        "id": task.id,
+                        "title": task.title,
+                        "description": task.description,
+                        "status": task.status,
+                    }
+                ),
+                headers={"Content-Type": "application/json"},
+            )
+
+        return Response(
+            content=json.dumps({"message": "task not found"}),
+            status_code=status.HTTP_404_NOT_FOUND,
+            headers={"Content-Type": "application/json"},
+        )
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="localhost", port=5000, reload=True)
+    uvicorn.run("main:app", host="localhost", port=5001, reload=True)

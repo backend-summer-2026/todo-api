@@ -4,6 +4,7 @@ import uvicorn
 from fastapi import FastAPI, Query, Body, Path
 from fastapi.responses import Response
 from fastapi import status
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
@@ -11,6 +12,19 @@ from models import engine, Tasks, Base
 
 
 app = FastAPI()
+
+origins = [
+    "*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 Base.metadata.create_all(engine)
 
 

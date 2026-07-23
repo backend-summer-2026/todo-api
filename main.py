@@ -1,3 +1,4 @@
+from typing import Tuple
 import json
 
 import uvicorn
@@ -6,9 +7,12 @@ from fastapi.responses import Response
 from fastapi import status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import desc
+from sqlalchemy import select
 
-from models import engine, Tasks, Base
+from models import engine, Tasks, Base, async_engine
+from schemas import TaskSchema
 
 
 app = FastAPI()
@@ -25,26 +29,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)
+
+# client > request > server > response > client
+# desializer vs serializer -> pydantic2
 
 
 @app.get("/api/health")
-def health_view() -> dict:
+async def health_view() -> dict:
     return {"message": "ok"}
 
 
 @app.get("/api/tasks")
-def get_tasks_view(page: int = Query(1, ge=1), n: int = Query(4, ge=1)) -> list[dict]:
+async def get_tasks_view(page: int = Query(1, ge=1), n: int = Query(4, ge=1)) -> list[dict]:
     offset = (page - 1) * n
     limit = n
-    with Session(engine) as session:
-        tasks: list[Tasks] = (
-            session.query(Tasks)
-            .order_by(desc(Tasks.id))
-            .offset(offset)
-            .limit(limit)
-            .all()
-        )
+    async_session = AsyncSession(async_engine)
+    stmt = select(Tasks).order_by(desc(Tasks.id)).offset(offset).limit(limit)
+    tasks = await async_session.execute(stmt)
 
     result = []
     for task in tasks:
@@ -61,9 +63,10 @@ def get_tasks_view(page: int = Query(1, ge=1), n: int = Query(4, ge=1)) -> list[
 
 
 @app.get("/api/tasks/{task_id}")
-def get_task_detail_view(task_id: int = Path(ge=1)) -> Response:
-    with Session(engine) as session:
-        task: Tasks | None = session.query(Tasks).get(task_id)
+async def get_task_detail_view(task_id: int = Path(ge=1)) -> Response:
+    async_session = AsyncSession(async_engine)
+    stmt = select(Tasks).where(Tasks.id==task_id)
+    task: Tasks | None = await async_session.execute(stmt) # type: ignore
 
     if task:
         return Response(
@@ -85,9 +88,9 @@ def get_task_detail_view(task_id: int = Path(ge=1)) -> Response:
 
 
 @app.post("/api/tasks")
-def create_task_view(data: dict = Body()) -> Response:
+async def create_task_view(data: TaskSchema = Body()) -> Response:
     with Session(engine) as session:
-        task = Tasks(**data)
+        task = Tasks(title=data.title, description=data.description, status=data.status)
         session.add(task)
         session.commit()
         session.refresh(task)
@@ -107,7 +110,7 @@ def create_task_view(data: dict = Body()) -> Response:
 
 
 @app.put("/api/tasks/{task_id}")
-def update_task_view(task_id: int = Path(ge=1), data: dict = Body()) -> Response:
+async def update_task_view(task_id: int = Path(ge=1), data: dict = Body()) -> Response:
     with Session(engine) as session:
         task: Tasks | None = session.query(Tasks).get(task_id)
         if task:
@@ -140,7 +143,7 @@ def update_task_view(task_id: int = Path(ge=1), data: dict = Body()) -> Response
 
 
 @app.delete("/api/tasks/{task_id}")
-def delete_task_view(task_id: int = Path(ge=1)) -> Response:
+async def delete_task_view(task_id: int = Path(ge=1)) -> Response:
     with Session(engine) as session:
         task: Tasks | None = session.query(Tasks).get(task_id)
         session.delete(task)
@@ -154,7 +157,7 @@ def delete_task_view(task_id: int = Path(ge=1)) -> Response:
 
 
 @app.patch("/api/tasks/{task_id}/completed")
-def mark_as_comleted_view(task_id: int = Path(ge=1)) -> Response:
+async def mark_as_comleted_view(task_id: int = Path(ge=1)) -> Response:
     with Session(engine) as session:
         task: Tasks | None = session.query(Tasks).get(task_id)
         if task:
@@ -183,7 +186,7 @@ def mark_as_comleted_view(task_id: int = Path(ge=1)) -> Response:
 
 
 @app.patch("/api/tasks/{task_id}/incompleted")
-def mark_as_incomleted_view(task_id: int = Path(ge=1)) -> Response:
+async def mark_as_incomleted_view(task_id: int = Path(ge=1)) -> Response:
     with Session(engine) as session:
         task: Tasks | None = session.query(Tasks).get(task_id)
         if task:
